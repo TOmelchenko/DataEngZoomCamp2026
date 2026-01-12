@@ -1,2 +1,2 @@
 # DataEngZoomCamp2026
-Data Engi
+Workspace for Data Engineering Zoom Camp 2026
