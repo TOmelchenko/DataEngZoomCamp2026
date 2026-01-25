@@ -1,6 +1,6 @@
 import sys
 import pandas as pd
-uv install panda
+
 print("arguments", sys.argv)
 
 day = int(sys.argv[1])
