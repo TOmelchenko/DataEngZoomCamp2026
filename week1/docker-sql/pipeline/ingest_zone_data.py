@@ -4,29 +4,13 @@ from sqlalchemy import create_engine
 import click
 
 
-dtype = {
-    "VendorID": "Int64",
-    "passenger_count": "Int64",
-    "trip_distance": "float64",
-    "RatecodeID": "Int64",
-    "store_and_fwd_flag": "string",
-    "PULocationID": "Int64",
-    "DOLocationID": "Int64",
-    "payment_type": "Int64",
-    "fare_amount": "float64",
-    "extra": "float64",
-    "mta_tax": "float64",
-    "tip_amount": "float64",
-    "tolls_amount": "float64",
-    "improvement_surcharge": "float64",
-    "total_amount": "float64",
-    "congestion_surcharge": "float64"
-}
+##dtype = {
+##    "LocationID": "varchar",
+##    "Borough": "varchar",
+##   "Zone": "varchar",
+##    "service_zone": "varchar"
+##}
 
-parse_dates = [
-    "tpep_pickup_datetime",
-    "tpep_dropoff_datetime"
-]
 
 @click.command()
 @click.option('--pg-user', default='root', help='PostgreSQL user')
@@ -34,27 +18,27 @@ parse_dates = [
 @click.option('--pg-host', default='localhost', help='PostgreSQL host')
 @click.option('--pg-port', default=5432, type=int, help='PostgreSQL port')
 @click.option('--pg-db', default='ny_taxi', help='PostgreSQL database name')
-@click.option('--target-table', default='yellow_taxi_data', help='Target table name')
+@click.option('--target-table', default='zone_taxi_data', help='Target table name')
 
 def run(pg_user, pg_pass, pg_host, pg_port, pg_db, target_table):
 
 
-    year = 2021
-    month = 1
+ 
 
     chunksize = 100000
 
-    prefix = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/'
-    url = f'{prefix}/yellow_tripdata_{year}-{month:02d}.csv.gz'    
+    #prefix = 'https://d37ci6vzurychx.cloudfront.net/trip-data/'
+    prefix = '/workspaces/DataEngZoomCamp2026/week1/docker-sql/pipeline'
+    url = f'{prefix}/taxi_zone_lookup.csv'  
+    #url = f'{prefix}/green_tripdata_{year}-{month:02d}.csv.gz'    
 
     engine = create_engine(f'postgresql://{pg_user}:{pg_pass}@{pg_host}:{pg_port}/{pg_db}')
-    #engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
+     
+  
 
-    
     df_iter = pd.read_csv(  
         url,
-        dtype=dtype,
-        parse_dates=parse_dates,
+        #dtype=dtype,
         iterator=True,
         chunksize=chunksize
     )

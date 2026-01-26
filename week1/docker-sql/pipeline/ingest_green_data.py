@@ -24,8 +24,8 @@ dtype = {
 }
 
 parse_dates = [
-    "tpep_pickup_datetime",
-    "tpep_dropoff_datetime"
+    "lpep_pickup_datetime",
+    "lpep_dropoff_datetime"
 ]
 
 @click.command()
@@ -34,23 +34,29 @@ parse_dates = [
 @click.option('--pg-host', default='localhost', help='PostgreSQL host')
 @click.option('--pg-port', default=5432, type=int, help='PostgreSQL port')
 @click.option('--pg-db', default='ny_taxi', help='PostgreSQL database name')
-@click.option('--target-table', default='yellow_taxi_data', help='Target table name')
+@click.option('--target-table', default='green_taxi_data', help='Target table name')
 
 def run(pg_user, pg_pass, pg_host, pg_port, pg_db, target_table):
 
 
-    year = 2021
-    month = 1
+    year = 2025
+    month = 11
 
     chunksize = 100000
 
-    prefix = 'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/'
-    url = f'{prefix}/yellow_tripdata_{year}-{month:02d}.csv.gz'    
+    #prefix = 'https://d37ci6vzurychx.cloudfront.net/trip-data/'
+    prefix = '/workspaces/DataEngZoomCamp2026/week1/docker-sql/pipeline'
+    url = f'{prefix}/green_tripdata_{year}-{month:02d}.parquet'  
+    #url = f'{prefix}/green_tripdata_{year}-{month:02d}.csv.gz'    
 
     engine = create_engine(f'postgresql://{pg_user}:{pg_pass}@{pg_host}:{pg_port}/{pg_db}')
-    #engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
 
-    
+  
+    df = pd.read_parquet(url)
+    url = 'output.csv.gz'
+    df.to_csv(url, index=False, compression="gzip")        
+  
+
     df_iter = pd.read_csv(  
         url,
         dtype=dtype,
