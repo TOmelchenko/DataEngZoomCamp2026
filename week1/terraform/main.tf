@@ -14,11 +14,13 @@ terraform {
 #  credentials = file(var.credentials) 
 #}
 
+#this part for temporary token using
 provider "google" {
    project = var.project
    region  = var.region
    zone    = var.zone
  }
+
 
 # This data source gets a temporary token for the service account
  data "google_service_account_access_token" "default" {
@@ -35,7 +37,8 @@ provider "google" {
    project      = var.project
    region       = var.region
    zone         = var.zone
- }
+ } 
+ 
 # Data Lake Bucket
 # Ref: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket
 resource "google_storage_bucket" "data-lake-bucket" {
