@@ -25,7 +25,7 @@ variable "zone" {
 
 variable "bucket_name" {
   description = "The name of the GCS bucket. Must be globally unique."
-  default = "dezc2026_data_bucket"
+  default = "dezc2026_data_bucket_tomel"
 }
 
 variable "storage_class" {
